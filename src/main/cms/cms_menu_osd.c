@@ -244,8 +244,10 @@ static long cmsx_menuOsdOnExit(const OSD_Entry *self)
   return 0;
 }
 
+#ifdef USE_MAX7456
 static OSD_UINT8_t brt_black_entry = {&displayPortProfileMax7456_blackBrightness, 0, 3, 1};
 static OSD_UINT8_t brt_white_entry = {&displayPortProfileMax7456_whiteBrightness, 0, 3, 1};
+#endif
 
 OSD_Entry cmsx_menuOsdEntries[] =
 {
