@@ -519,11 +519,15 @@ static long saCmsConfigUserFreq(displayPort_t *pDisp, const void *self)
     return MENU_CHAIN_BACK;
 }
 
+
+static OSD_UINT16_t cur_freq_data = { &saCmsORFreq, 5000, 5999, 0 };
+static OSD_UINT16_t new_freq_data = { &saCmsORFreqNew, 5000, 5999, 1 };
+
 static OSD_Entry saCmsMenuPORFreqEntries[] = {
     { "- POR FREQ -", OME_Label,   NULL,             NULL,                                                 0 },
 
-    { "CUR FREQ",     OME_UINT16,  NULL,             &(OSD_UINT16_t){ &saCmsORFreq, 5000, 5999, 0 },       DYNAMIC },
-    { "NEW FREQ",     OME_UINT16,  NULL,             &(OSD_UINT16_t){ &saCmsORFreqNew, 5000, 5999, 1 },    0 },
+    { "CUR FREQ",     OME_UINT16,  NULL,             &cur_freq_data,    DYNAMIC },
+    { "NEW FREQ",     OME_UINT16,  NULL,             &new_freq_data,    0 },
     { "SET",          OME_Funcall, saCmsSetPORFreq,  NULL,                                                 0 },
 
     { "BACK",         OME_Back,    NULL,             NULL,                                                 0 },
@@ -541,11 +545,14 @@ static CMS_Menu saCmsMenuPORFreq =
     .entries = saCmsMenuPORFreqEntries,
 };
 
+static OSD_UINT16_t user_cur_freq_data = { &saCmsUserFreq, 5000, 5999, 0 };
+static OSD_UINT16_t user_new_freq_data = { &saCmsUserFreqNew, 5000, 5999, 1 };
+
 static OSD_Entry saCmsMenuUserFreqEntries[] = {
     { "- USER FREQ -", OME_Label,   NULL,             NULL,                                                0 },
 
-    { "CUR FREQ",      OME_UINT16,  NULL,             &(OSD_UINT16_t){ &saCmsUserFreq, 5000, 5999, 0 },    DYNAMIC },
-    { "NEW FREQ",      OME_UINT16,  NULL,             &(OSD_UINT16_t){ &saCmsUserFreqNew, 5000, 5999, 1 }, 0 },
+    { "CUR FREQ",      OME_UINT16,  NULL,             &user_cur_freq_data, DYNAMIC },
+    { "NEW FREQ",      OME_UINT16,  NULL,             &user_new_freq_data, 0 },
     { "SET",           OME_Funcall, saCmsConfigUserFreq, NULL,                                                0 },
 
     { "BACK",          OME_Back,    NULL,             NULL,                                                0 },
@@ -565,10 +572,12 @@ static CMS_Menu saCmsMenuUserFreq =
 
 static OSD_TAB_t saCmsEntFselMode = { &saCmsFselModeNew, 1, saCmsFselModeNames };
 
+static OSD_TAB_t op_model_data = { &saCmsOpmodel, 2, saCmsOpmodelNames };
+
 static OSD_Entry saCmsMenuConfigEntries[] = {
     { "- SA CONFIG -", OME_Label, NULL, NULL, 0 },
 
-    { "OP MODEL",  OME_TAB,     saCmsConfigOpmodelByGvar,              &(OSD_TAB_t){ &saCmsOpmodel, 2, saCmsOpmodelNames }, DYNAMIC },
+    { "OP MODEL",  OME_TAB,     saCmsConfigOpmodelByGvar,              &op_model_data, DYNAMIC },
     { "FSEL MODE", OME_TAB,     saCmsConfigFreqModeByGvar,             &saCmsEntFselMode,                                   DYNAMIC },
     { "PIT FMODE", OME_TAB,     saCmsConfigPitFModeByGvar,             &saCmsEntPitFMode,                                   0 },
     { "POR FREQ",  OME_Submenu, (CMSEntryFuncPtr)saCmsORFreqGetString, &saCmsMenuPORFreq,                                   OPTSTRING },

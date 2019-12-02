@@ -244,6 +244,9 @@ static long cmsx_menuOsdOnExit(const OSD_Entry *self)
   return 0;
 }
 
+static OSD_UINT8_t brt_black_entry = {&displayPortProfileMax7456_blackBrightness, 0, 3, 1};
+static OSD_UINT8_t brt_white_entry = {&displayPortProfileMax7456_whiteBrightness, 0, 3, 1};
+
 OSD_Entry cmsx_menuOsdEntries[] =
 {
     {"---OSD---",   OME_Label,   NULL,          NULL,                0},
@@ -254,8 +257,8 @@ OSD_Entry cmsx_menuOsdEntries[] =
 #endif
 #ifdef USE_MAX7456
     {"INVERT",    OME_Bool,  NULL, &displayPortProfileMax7456_invert,                                   0},
-    {"BRT BLACK", OME_UINT8, NULL, &(OSD_UINT8_t){&displayPortProfileMax7456_blackBrightness, 0, 3, 1}, 0},
-    {"BRT WHITE", OME_UINT8, NULL, &(OSD_UINT8_t){&displayPortProfileMax7456_whiteBrightness, 0, 3, 1}, 0},
+    {"BRT BLACK", OME_UINT8, NULL, &brt_black_entry, 0},
+    {"BRT WHITE", OME_UINT8, NULL, &brt_white_entry, 0},
 #endif
     {"BACK", OME_Back, NULL, NULL, 0},
     {NULL,   OME_END,  NULL, NULL, 0}

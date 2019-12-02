@@ -64,6 +64,17 @@ static long cmsx_menuRcConfirmBack(const OSD_Entry *self)
         return -1;
 }
 
+static OSD_INT16_t roll_data  = { &rcData[ROLL],     1, 2500, 0 };
+static OSD_INT16_t pitch_data = { &rcData[PITCH],    1, 2500, 0 };
+static OSD_INT16_t thr_data   = { &rcData[THROTTLE], 1, 2500, 0 };
+static OSD_INT16_t yaw_data   = { &rcData[YAW],      1, 2500, 0 };
+
+static OSD_INT16_t aux1_data  = { &rcData[AUX1],     1, 2500, 0 };
+static OSD_INT16_t aux2_data  = { &rcData[AUX2],     1, 2500, 0 };
+static OSD_INT16_t aux3_data  = { &rcData[AUX3],     1, 2500, 0 };
+static OSD_INT16_t aux4_data  = { &rcData[AUX4],     1, 2500, 0 };
+
+
 //
 // RC preview
 //
@@ -71,15 +82,15 @@ static OSD_Entry cmsx_menuRcEntries[] =
 {
     { "-- RC PREV --", OME_Label, NULL, NULL, 0},
 
-    { "ROLL",  OME_INT16, NULL, &(OSD_INT16_t){ &rcData[ROLL],     1, 2500, 0 }, DYNAMIC },
-    { "PITCH", OME_INT16, NULL, &(OSD_INT16_t){ &rcData[PITCH],    1, 2500, 0 }, DYNAMIC },
-    { "THR",   OME_INT16, NULL, &(OSD_INT16_t){ &rcData[THROTTLE], 1, 2500, 0 }, DYNAMIC },
-    { "YAW",   OME_INT16, NULL, &(OSD_INT16_t){ &rcData[YAW],      1, 2500, 0 }, DYNAMIC },
+    { "ROLL",  OME_INT16, NULL, &roll_data , DYNAMIC },
+    { "PITCH", OME_INT16, NULL, &pitch_data, DYNAMIC },
+    { "THR",   OME_INT16, NULL, &thr_data  , DYNAMIC },
+    { "YAW",   OME_INT16, NULL, &yaw_data  , DYNAMIC },
 
-    { "AUX1",  OME_INT16, NULL, &(OSD_INT16_t){ &rcData[AUX1],     1, 2500, 0 }, DYNAMIC },
-    { "AUX2",  OME_INT16, NULL, &(OSD_INT16_t){ &rcData[AUX2],     1, 2500, 0 }, DYNAMIC },
-    { "AUX3",  OME_INT16, NULL, &(OSD_INT16_t){ &rcData[AUX3],     1, 2500, 0 }, DYNAMIC },
-    { "AUX4",  OME_INT16, NULL, &(OSD_INT16_t){ &rcData[AUX4],     1, 2500, 0 }, DYNAMIC },
+    { "AUX1",  OME_INT16, NULL, &aux1_data , DYNAMIC },
+    { "AUX2",  OME_INT16, NULL, &aux2_data , DYNAMIC },
+    { "AUX3",  OME_INT16, NULL, &aux3_data , DYNAMIC },
+    { "AUX4",  OME_INT16, NULL, &aux4_data , DYNAMIC },
 
     { "BACK",  OME_Back, NULL, NULL, 0},
     {NULL, OME_END, NULL, NULL, 0}
@@ -119,13 +130,17 @@ static long cmsx_menuMiscOnExit(const OSD_Entry *self)
     return 0;
 }
 
+static OSD_UINT16_t min_thr_data      = { &motorConfig_minthrottle,              1000, 2000, 1    };
+static OSD_UINT8_t  digital_idle_data = { &motorConfig_digitalIdleOffsetValue,      0,  200, 1    };
+static OSD_TAB_t    debug_mode_data   = { &systemConfig_debug_mode, DEBUG_COUNT - 1, debugModeNames };
+
 static OSD_Entry menuMiscEntries[]=
 {
     { "-- MISC --", OME_Label, NULL, NULL, 0 },
 
-    { "MIN THR",      OME_UINT16,  NULL,          &(OSD_UINT16_t){ &motorConfig_minthrottle,              1000, 2000, 1 },      0 },
-    { "DIGITAL IDLE", OME_UINT8,   NULL,          &(OSD_UINT8_t) { &motorConfig_digitalIdleOffsetValue,      0,  200, 1 },      0 },
-    { "DEBUG MODE",   OME_TAB,     NULL,          &(OSD_TAB_t) { &systemConfig_debug_mode, DEBUG_COUNT - 1, debugModeNames },      0 },
+    { "MIN THR",      OME_UINT16,  NULL, &min_thr_data,      0 },
+    { "DIGITAL IDLE", OME_UINT8,   NULL, &digital_idle_data,      0 },
+    { "DEBUG MODE",   OME_TAB,     NULL, &debug_mode_data,      0 },
     { "RC PREV",      OME_Submenu, cmsMenuChange, &cmsx_menuRcPreview, 0},
 
     { "BACK", OME_Back, NULL, NULL, 0},

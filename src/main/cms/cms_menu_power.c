@@ -96,23 +96,39 @@ static long cmsx_Power_onExit(const OSD_Entry *self)
     return 0;
 }
 
+static OSD_TAB_t   v_meter_data          = { &batteryConfig_voltageMeterSource, VOLTAGE_METER_COUNT - 1, voltageMeterSourceNames };
+static OSD_TAB_t   i_meter_data          = { &batteryConfig_currentMeterSource, CURRENT_METER_COUNT - 1, currentMeterSourceNames };
+
+static OSD_UINT8_t vbat_clmax_data       = { &batteryConfig_vbatmaxcellvoltage, 10, 50, 1                                        };
+
+static OSD_UINT8_t vbat_scale_data       = { &voltageSensorADCConfig_vbatscale, VBAT_SCALE_MIN, VBAT_SCALE_MAX, 1                };
+
+static OSD_INT16_t ibat_scale_data       = { &currentSensorADCConfig_scale, -16000, 16000, 5                                     };
+static OSD_INT16_t ibat_offset_data      = { &currentSensorADCConfig_offset, -16000, 16000, 5                                    };
+
+
+#ifdef USE_VIRTUAL_CURRENT_METER
+static OSD_INT16_t ibat_virt_scale_data  = { &currentSensorVirtualConfig_scale, -16000, 16000, 5                                 };
+static OSD_INT16_t ibat_virt_offset_data = { &currentSensorVirtualConfig_offset, -16000, 16000, 5                                };
+#endif
+
 static OSD_Entry cmsx_menuPowerEntries[] =
 {
     { "-- POWER --", OME_Label, NULL, NULL, 0},
 
-    { "V METER", OME_TAB, NULL, &(OSD_TAB_t){ &batteryConfig_voltageMeterSource, VOLTAGE_METER_COUNT - 1, voltageMeterSourceNames }, 0 },
-    { "I METER", OME_TAB, NULL, &(OSD_TAB_t){ &batteryConfig_currentMeterSource, CURRENT_METER_COUNT - 1, currentMeterSourceNames }, 0 },
+    { "V METER", OME_TAB, NULL,            &v_meter_data         , 0 },
+    { "I METER", OME_TAB, NULL,            &i_meter_data         , 0 },
 
-    { "VBAT CLMAX", OME_UINT8, NULL, &(OSD_UINT8_t) { &batteryConfig_vbatmaxcellvoltage, 10, 50, 1 }, 0 },
+    { "VBAT CLMAX", OME_UINT8, NULL,       &vbat_clmax_data      , 0 },
 
-    { "VBAT SCALE", OME_UINT8, NULL, &(OSD_UINT8_t){ &voltageSensorADCConfig_vbatscale, VBAT_SCALE_MIN, VBAT_SCALE_MAX, 1 }, 0 },
+    { "VBAT SCALE", OME_UINT8, NULL,       &vbat_scale_data      , 0 },
 
-    { "IBAT SCALE", OME_INT16, NULL, &(OSD_INT16_t){ &currentSensorADCConfig_scale, -16000, 16000, 5 }, 0 },
-    { "IBAT OFFSET", OME_INT16, NULL, &(OSD_INT16_t){ &currentSensorADCConfig_offset, -16000, 16000, 5 }, 0 },
+    { "IBAT SCALE", OME_INT16, NULL,       &ibat_scale_data      , 0 },
+    { "IBAT OFFSET", OME_INT16, NULL,      &ibat_offset_data     , 0 },
 
 #ifdef USE_VIRTUAL_CURRENT_METER
-    { "IBAT VIRT SCALE", OME_INT16, NULL, &(OSD_INT16_t){ &currentSensorVirtualConfig_scale, -16000, 16000, 5 }, 0 },
-    { "IBAT VIRT OFFSET", OME_INT16, NULL, &(OSD_INT16_t){ &currentSensorVirtualConfig_offset, -16000, 16000, 5 }, 0 },
+    { "IBAT VIRT SCALE", OME_INT16, NULL,  &ibat_virt_scale_data , 0 },
+    { "IBAT VIRT OFFSET", OME_INT16, NULL, &ibat_virt_offset_data, 0 },
 #endif
 
     { "BACK", OME_Back, NULL, NULL, 0 },
